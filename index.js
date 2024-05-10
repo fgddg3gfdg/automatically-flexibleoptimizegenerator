@@ -1,14 +1,16 @@
-function maxEnvelopes(envelopes) {
-  envelopes.sort((a, b) => a[0] - b[0] || b[1] - a[1]);
-  const dp = new Array(envelopes.length).fill(1);
-  let max = 1;
-  for (let i = 1; i < envelopes.length; i++) {
-    for (let j = 0; j < i; j++) {
-      if (envelopes[i][1] > envelopes[j][1]) {
-        dp[i] = Math.max(dp[i], dp[j] + 1);
-        max = Math.max(max, dp[i]);
-      }
+function minPathSum(grid) {
+  const rows = grid.length;
+  const cols = grid[0].length;
+  for (let i = 1; i < rows; i++) {
+    grid[i][0] += grid[i - 1][0];
+  }
+  for (let j = 1; j < cols; j++) {
+    grid[0][j] += grid[0][j - 1];
+  }
+  for (let i = 1; i < rows; i++) {
+    for (let j = 1; j < cols; j++) {
+      grid[i][j] += Math.min(grid[i - 1][j], grid[i][j - 1]);
     }
   }
-  return max;
+  return grid[rows - 1][cols - 1];
 }
